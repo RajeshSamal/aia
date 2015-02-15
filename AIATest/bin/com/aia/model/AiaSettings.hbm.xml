@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 12, 2015 2:45:10 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="AiaSettings" table="AIA_SETTINGS" catalog="AIATEST">
+        <id name="settingsId" type="int">
+            <column name="SETTINGS_ID" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="aiaUsers" class="AiaUsers" fetch="select">
+            <column name="USER_ID" not-null="true" />
+        </many-to-one>
+        <property name="platform" type="string">
+            <column name="PLATFORM" length="25" not-null="true" />
+        </property>
+        <property name="url" type="string">
+            <column name="URL" length="60" />
+        </property>
+        <property name="password2" type="string">
+            <column name="PASSWORD_2" length="50" />
+        </property>
+        <property name="organisation" type="string">
+            <column name="ORGANISATION" length="50" />
+        </property>
+        <property name="createdDate" type="date">
+            <column name="CREATED_DATE" length="10" />
+        </property>
+        <property name="modifiedDate" type="date">
+            <column name="MODIFIED_DATE" length="10" />
+        </property>
+        <property name="createdDy" type="string">
+            <column name="CREATED_DY" length="25" />
+        </property>
+        <property name="modifiedBy" type="string">
+            <column name="MODIFIED_BY" length="25" />
+        </property>
+        <property name="status2" type="string">
+            <column name="STATUS_2" length="2" />
+        </property>
+        <property name="port" type="string">
+            <column name="PORT" length="25" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 12, 2015 2:45:10 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="AiaMarketingTranHist" table="AIA_MARKETING_TRAN_HIST" catalog="AIATEST">
+        <id name="marketingTranId" type="int">
+            <column name="MARKETING_TRAN_ID" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="aiaMarketingHist" class="AiaMarketingHist" fetch="select">
+            <column name="ATTRIBUTE_ID" not-null="true" />
+        </many-to-one>
+        <property name="attributeName" type="string">
+            <column name="ATTRIBUTE_NAME" length="25" />
+        </property>
+        <property name="attributeValue" type="string">
+            <column name="ATTRIBUTE_VALUE" length="25" />
+        </property>
+    </class>
+</hibernate-mapping>

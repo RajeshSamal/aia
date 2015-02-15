@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 12, 2015 2:45:10 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="AiaMarketingHist" table="AIA_MARKETING_HIST" catalog="AIATEST">
+        <id name="attributeId" type="int">
+            <column name="ATTRIBUTE_ID" />
+            <generator class="increment" />
+        </id>
+        <property name="fileId" type="string">
+            <column name="FILE_ID" length="25" />
+        </property>
+        <property name="memberFirstNames" type="string">
+            <column name="MEMBER_FIRST_NAMES" length="25" />
+        </property>
+        <property name="memberSurname" type="string">
+            <column name="MEMBER_SURNAME" length="25" />
+        </property>
+        <property name="mailAddress" type="string">
+            <column name="MAIL_ADDRESS" length="25" />
+        </property>
+        <property name="aiaVitalityMemberNumber" type="string">
+            <column name="AIA_VITALITY_MEMBER_NUMBER" length="25" />
+        </property>
+        <property name="entityReferenceNumber" type="string">
+            <column name="ENTITY_REFERENCE_NUMBER" length="25" />
+        </property>
+        <property name="languagePreference" type="string">
+            <column name="LANGUAGE_PREFERENCE" length="2" />
+        </property>
+        <property name="recordStatus" type="string">
+            <column name="RECORD_STATUS" length="2" />
+        </property>
+        <property name="processDate" type="date">
+            <column name="PROCESS_DATE" length="10" />
+        </property>
+        <property name="recordId" type="java.lang.Integer">
+            <column name="RECORD_ID" />
+        </property>
+        <set name="aiaMarketingTranHists" table="AIA_MARKETING_TRAN_HIST" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ATTRIBUTE_ID" not-null="true" />
+            </key>
+            <one-to-many class="AiaMarketingTranHist" />
+        </set>
+    </class>
+</hibernate-mapping>
