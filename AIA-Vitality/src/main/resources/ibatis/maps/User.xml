@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+	<cacheModel id="userCache" type="OSCACHE">
+		<flushInterval minutes="30"/>	
+		<property name="reference-type" value="SOFT"/>
+	</cacheModel>
+	
+	<resultMap id="User-result" class="com.aia.model.User">
+		<result property="id" column="USER_ID"/>
+		<result property="firstName" column="FIRST_NAME"/>
+	    <result property="lastName" column="LAST_NAME"/>
+	    <result property="email" column="EMAIL"/>
+	    <result property="password" column="PASSWORD"/>
+	    <result property="lastLoginDate" column="LAST_LOGIN_DATE"/>
+	    <result property="enabled" column="IS_ENABLED"/> 
+    </resultMap>
+    
+	<sql id="getUserSQL">
+  		select 
+    		u.USER_ID,
+    		u.FIRST_NAME, 
+    		u.LAST_NAME,    		
+    		u.EMAIL,
+    		u.PASSWORD,
+    		u.LAST_LOGIN_DATE,
+    		u.IS_ENABLED
+    		
+    	from EPI_USER u
+  	</sql>
+  	
+  	<select id="get" parameterClass="java.lang.Long" resultMap="User-result" cacheModel="User.userCache">
+    	<include refid="getUserSQL"/>
+    	where USER_ID=#value#
+  	</select>  	
+  	
+    
+  	<select id="getUserDetails" parameterClass="java.util.Map" resultMap="User-result" cacheModel="User.userCache">
+    	<include refid="getUserSQL"/>
+    	<dynamic prepend="WHERE">
+    		<isNotNull prepend="AND" property="userName">
+    			u.EMAIL = #userName#
+    		</isNotNull>
+    		<isNotNull prepend="AND" property="id">
+    			u.USER_ID=#id#
+    		</isNotNull>    		
+    	</dynamic>
+  	</select>
+  	<!-- <select id="verifyUserOldPassword" parameterClass="java.util.Map" resultMap="User-result" cacheModel="User.userCache">
+    	<include refid="getUserSQL"/>
+    	where u.EMAIL = #email# AND PASSWORD=SHA2(#password#, 256)
+  	</select>
+  	
+  	<update id="changePassword" parameterClass="java.util.Map">
+  		update EPI_USER set 
+  			PASSWORD=SHA2(#newPassword#, 256)
+  		where id=#id#
+  	</update> -->
+  	
+  	<select id="verifyUserOldPassword" parameterClass="java.util.Map" resultMap="User-result" cacheModel="User.userCache">
+    	<include refid="getUserSQL"/>
+    	where u.EMAIL = #email# AND PASSWORD=#password#
+  	</select>
+  	
+  	<update id="changePassword" parameterClass="java.util.Map">
+  		update EPI_USER set 
+  			PASSWORD=#newPassword#
+   		where USER_ID=#id#
+  	</update>
+  		  
+</sqlMap>

@@ -1,0 +1,192 @@
+/* ---------- FONTAWESOME ---------- */
+
+[class*="fontawesome-"]:before {
+  font-family: 'FontAwesome', sans-serif;
+}
+
+/* ---------- GENERAL ---------- */
+
+body {
+	background-color: #C0C0C0;
+	color: #000;
+	font-family: "Varela Round", Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	line-height: 1.5em;
+}
+
+input {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	-webkit-appearance: none;
+}
+
+
+textarea {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	-webkit-appearance: none;
+}
+
+/* ---------- LOGIN ---------- */
+
+#login {
+	margin: 50px auto;
+	width: 400px;
+}
+
+#login h2, #changePassword h2 {
+	background-color: #f95252;
+	-webkit-border-radius: 20px 20px 0 0;
+	-moz-border-radius: 20px 20px 0 0;
+	border-radius: 20px 20px 0 0;
+	color: #fff;
+	font-size: 28px;
+	padding: 20px 26px;
+	margin:0;
+}
+
+#editSchedule h2, #logDetails h2 {
+	background-color: #f95252;
+	-webkit-border-radius: 20px 20px 0 0;
+	-moz-border-radius: 20px 20px 0 0;
+	border-radius: 20px 20px 0 0;
+	color: #fff;
+	font-size: 16px;
+	padding: 10px;
+	margin:0;
+}
+
+#login h2 span[class*="fontawesome-"] {
+	margin-right: 14px;
+}
+
+#login fieldset, #editScheduleForm fieldset, #logDetails fieldset, #changePasswordForm fieldset{
+	background-color: #fff;
+	-webkit-border-radius: 0 0 20px 20px;
+	-moz-border-radius: 0 0 20px 20px;
+	border-radius: 0 0 20px 20px;
+	padding: 20px 26px;
+	border:0 none;
+	margin:0;
+}
+
+
+
+#login fieldset p {
+	color: #777;
+	margin-bottom: 14px;
+}
+
+#login fieldset p:last-child {
+	margin-bottom: 0;
+}
+
+#login fieldset input, #editScheduleForm fieldset input , 
+#editScheduleForm fieldset textarea , 
+#changePasswordForm fieldset input{
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+#login fieldset input[type="text"], 
+#login fieldset input[type="password"], 
+#changePassword fieldset input[type=password] {
+	background-color: #eee;
+	color: #777;
+	padding: 4px 10px;
+	width: 328px;
+}
+
+#login fieldset input[type="submit"],  #changePassword fieldset input[type=submit]{
+	background-color: #33cc77;
+	color: #fff;
+	display: block;
+	margin: 0 auto;
+	padding: 4px 0;
+	width: 100px;
+}
+
+#editScheduleForm fieldset input[type="submit"],
+#editScheduleForm fieldset input[type="button"]{
+	background-color: #33cc77;
+	color: #fff;	
+	margin: 0 auto;
+	padding: 4px 0;
+	width: 100px;
+}
+
+#login fieldset input[type="submit"]:hover,
+#editScheduleForm fieldset input[type="submit"]:hover,
+#editScheduleForm fieldset input[type="button"]:hover,
+#changePasswordForm fieldset input[type="submit"]:hover{
+	background-color: #28ad63;
+}
+
+#editScheduleDetails input[type="text"]{
+	background-color: #eee;
+	color: #777;
+	padding: 4px 10px;
+	width: 328px;
+}
+
+#editScheduleDetails textarea{
+	background-color: #eee;
+	color: #777;
+	padding: 4px 10px;
+	width: 328px;
+}
+
+.EvenRow {
+	background-color: #EEEEEE;
+}
+		
+.OddRow {
+	background-color: #FFFFFF;
+}
+
+
+.ScheduleTableHeader {
+	background-color:#F95252;
+	color: #fff;
+	font-size: 16px;
+}
+
+.ScheduleTablecol{
+	font-size: 14px;
+}
+
+
+.indexHeader{
+	font-family: sans-serif;
+	font-size: 28px;
+	font-weight:bold;
+	color:#ffffff;
+	
+	
+	
+}
+
+.indexHeader2{
+	font-family: sans-serif;
+	font-size: 28px;
+	font-weight:bold;
+	color:#000000;	
+}
+
+.errorMsg{
+	color:#FF0000;	
+}
+
+.successMsg{
+	color:#28ad63;	
+}
+
+
+

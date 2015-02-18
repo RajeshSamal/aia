@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- Scans the impl package for module @Components to install and configure -->
+	<context:component-scan base-package="com.aia.controller" />
+	
+	<!-- Enables explicit @RequestMapping("path") annotations -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="useDefaultSuffixPattern" value="false" />
+		<property name="order" value="0" />
+	</bean>
+	
+	<!-- Spring MVC request HandlerAdapters must be explicitly registered now that we are now overriding the defaults to plug-in the FlowHandlerAdapter -->
+	<!-- Dispatches requests mapped to POJO @Controllers implementations -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- Defined the jsonConverter bean -->
+	<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/json" />
+	</bean>
+	
+	<!-- Enables /[resource] to [Resource]Controller class mapping -->
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		<property name="order" value="1" />
+	</bean>
+	
+	<!-- Define the following 3 beans for controller less views -->
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+	<bean id="filenameController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" /> 
+	<bean id="urlMappingNoControllers" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/=filenameController
+				/index=filenameController
+				/adminPage=filenameController
+			</value>
+		</property>
+		<property name="order" value="2" />
+	</bean>
+	<!-- Resolves view names -->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="ignoreAcceptHeader" value="false" />
+		<property name="favorPathExtension" value="true" />
+		<property name="favorParameter" value="true" />
+		<property name="mediaTypes">
+		    <map>
+		        <entry key="xml" value="application/xml" />
+		        <entry key="html" value="text/html" />
+		        <entry key="json" value="application/json" />
+		    </map>
+		</property>
+		<property name="viewResolvers">
+      		<list>        
+				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+        		<bean  class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+          			<property name="prefix" value="/WEB-INF/pages/" />
+          			<property name="suffix" value=".jsp" />
+          			<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        		</bean>
+      		</list>
+	  	</property>  
+		
+		<property name="defaultViews">
+			<list>
+	      		<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	    	</list>
+	  	</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">/error</prop>
+            </props>
+        </property>
+    </bean>
+
+	<!-- Resolves messages to support internationalization -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:messages/pages</value>
+				<value>classpath:messages/application</value>
+			</list>
+		 </property>
+		 <property name="defaultEncoding" value="UTF-8"/>
+		 <property name="useCodeAsDefaultMessage" value="false"/>
+	</bean>
+	
+
+   <!--  <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="1000000"/>
+   </bean>  -->   
+   
+</beans>
