@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	
+	<appender name="sysLog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="D:/AIA-workspace/var/log/AIA-application"/>
+		<param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.HTMLLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n"/>
+        </layout>
+    </appender>
+    
+     <appender name="aiaLog" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="D:/AIA-workspace/var/log/AIA-application"/>
+		<param name="DatePattern" value="_yyyy-MM-dd-HH-mm"/>
+		<layout class="org.apache.log4j.HTMLLayout">
+            <param name="ConversionPattern" value="%d{${datestamp}}%p%m%n"/>
+        </layout>
+    </appender> 
+    
+	<logger name="org.springframework" additivity="false">
+		<level value="ERROR"/>
+		<appender-ref ref="sysLog"/>
+    </logger>    
+    
+	<logger name="org.springframework.security" additivity="false">
+        <level value="WARN"/>
+		<appender-ref ref="sysLog"/>
+    </logger>
+    
+	<logger name="org.apache" additivity="false">
+        <level value="WARN"/>
+		<appender-ref ref="sysLog"/>
+    </logger>
+       
+    <logger name="com.aia" additivity="false">
+        <level value="DEBUG"/>
+		<appender-ref ref="aiaLog"/>
+    </logger>
+    
+    <root>
+		<level value="INFO"/>
+        <appender-ref ref="sysLog"/>
+        <appender-ref ref="aiaLog"/>
+	</root>
+	
+</log4j:configuration>
