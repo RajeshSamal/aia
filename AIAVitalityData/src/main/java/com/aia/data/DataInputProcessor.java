@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,7 +25,9 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.log4j.Logger;
 
 import com.aia.common.utils.CSVReader;
+import com.aia.common.utils.Constants;
 import com.aia.common.utils.FTPConnect;
+import com.aia.dao.HkagDAO;
 import com.aia.model.CDODetails;
 import com.aia.model.HKAchieveGold;
 import com.aia.service.AIAService;
@@ -36,8 +39,10 @@ public class DataInputProcessor {
 	private static Map<String, String> fileToClassMap = new HashMap<String, String>();
 	private static Map<String, String> HKAchieveGoldColumnMap = new HashMap<String, String>();
 	private static Map<String, Map<String, String>> fileMap = new HashMap<String, Map<String, String>>();
+	private static HkagDAO hkagDAO;
 
 	static {
+		hkagDAO= new HkagDAO();
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
@@ -265,6 +270,7 @@ public class DataInputProcessor {
 	public static void processFiles(String fileName) {
 		Class fileClass = getFileClass(fileName);
 		List recordObjectList = fileToRecordList(fileName, fileClass);
+		saveToDatBase(recordObjectList,fileClass);
 		sendToElqua(recordObjectList, fileClass);
 
 	}
@@ -275,14 +281,29 @@ public class DataInputProcessor {
 		}
 
 	}
+	
+	public static void saveToDatBase(List objectList, Class fileClass) {
+		HKAchieveGold HKAG = null;
+		if (fileClass.getName().equalsIgnoreCase("com.aia.model.HKAchieveGold")) {
+			for (int i = 0; i < objectList.size(); i++) {
+
+				HKAG = (HKAchieveGold) objectList.get(i);
+				HKAG.setRecordStatus(Constants.RECORD_SAVED);
+				HKAG.setProcessDate(new Date());
+				hkagDAO.insert(HKAG);
+			}
+
+		}
+
+	}
 
 	public static void main(String[] args) throws IOException {
 		if (args.length > 0) {
 			localDirectory = args[0];
 		}
-		//clearLocalDirectory();
-		//FTPClient ftpClient = FTPConnect.getFtpConnection();
-		//retrieveFiles(ftpClient);
+		clearLocalDirectory();
+		FTPClient ftpClient = FTPConnect.getFtpConnection();
+		retrieveFiles(ftpClient);
 		File folder = new File(localDirectory);
 		File[] listOfFiles = folder.listFiles();
 		for (int i = 0; i < listOfFiles.length; i++) {
