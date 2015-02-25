@@ -31,7 +31,7 @@ import com.aia.service.AIAService;
 
 public class DataInputProcessor {
 
-	private static final String localDirectory = "D://Temp";
+	private static String localDirectory = "D://Temp";
 	static Logger logger = Logger.getLogger(DataInputProcessor.class);
 	private static Map<String, String> fileToClassMap = new HashMap<String, String>();
 	private static Map<String, String> HKAchieveGoldColumnMap = new HashMap<String, String>();
@@ -42,7 +42,7 @@ public class DataInputProcessor {
 		InputStream input = null;
 		try {
 
-			input = new FileInputStream("filetoclass.properties");
+			input = new FileInputStream("config\\filetoclass.properties");
 
 			// load a properties file
 			prop.load(input);
@@ -54,7 +54,7 @@ public class DataInputProcessor {
 				String value = prop.getProperty(key);
 				fileToClassMap.put(key, value);
 			}
-			input = new FileInputStream("HKAchieveGold.properties");
+			input = new FileInputStream("config\\HKAchieveGold.properties");
 			prop.load(input);
 			e = prop.propertyNames();
 
@@ -81,26 +81,24 @@ public class DataInputProcessor {
 	}
 
 	public static void retrieveFiles(FTPClient ftpClient) {
-		// FTPFile[] files = null;
-		// OutputStream output = null;
-		// BufferedOutputStream bos = null;
-		// try {
-		// files = ftpClient.listFiles();
-		// for (FTPFile file : files) {
-		// String details = file.getName();
-		// output = new FileOutputStream(localDirectory + "/" + file.getName());
-		// ftpClient.retrieveFile(details, output);
-		// output.close();
-		// output=null;
-		processFiles(localDirectory + "/"
-				+ "HK-ACHIEVE_GOLD-20141028040046.csv");
-		// System.out.println(details);
-		// }
+		FTPFile[] files = null;
+		OutputStream output = null;
+		BufferedOutputStream bos = null;
+		try {
+			files = ftpClient.listFiles();
+			for (FTPFile file : files) {
+				String details = file.getName();
+				output = new FileOutputStream(localDirectory + "/"
+						+ file.getName());
+				ftpClient.retrieveFile(details, output);
+				output.close();
+				output = null;
+			}
 
-		// } catch (IOException e) {
-		// TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static String getFileNameFromClassName(String fileName) {
@@ -270,11 +268,28 @@ public class DataInputProcessor {
 		sendToElqua(recordObjectList, fileClass);
 
 	}
+	public static void clearLocalDirectory() {
+		File folder = new File(localDirectory);
+		for(File file: folder.listFiles()) {
+			file.delete();
+		}
+
+	}
 
 	public static void main(String[] args) throws IOException {
-		FTPClient ftpClient = FTPConnect.getFtpConnection();
-		retrieveFiles(ftpClient);
-		// processFiles("D:\\Docs\\Personal\\AIA\\Files\\HK-ACHIEVE_GOLD-20141028040046.csv");
+		if (args.length > 0) {
+			localDirectory = args[0];
+		}
+		//clearLocalDirectory();
+		//FTPClient ftpClient = FTPConnect.getFtpConnection();
+		//retrieveFiles(ftpClient);
+		File folder = new File(localDirectory);
+		File[] listOfFiles = folder.listFiles();
+		for (int i = 0; i < listOfFiles.length; i++) {
+			if (listOfFiles[i].isFile()) {
+				processFiles(localDirectory + "/" + listOfFiles[i].getName());
+			}
+		}
 
 	}
 
